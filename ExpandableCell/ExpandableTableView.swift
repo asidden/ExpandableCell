@@ -11,22 +11,14 @@ import UIKit
 open class ExpandableTableView: UITableView {
     public var animation: UITableView.RowAnimation = .top
     public var expansionStyle : ExpandableTableView.ExpansionStyle = .multi
-    public var autoReleaseDelegate: Bool = true
     public var autoRemoveSelection: Bool = true
     fileprivate var expandableProcessor = ExpandableProcessor()
     fileprivate var formerIndexPath: IndexPath?
 
-    public var expandableDelegate: ExpandableDelegate? {
+    public weak var expandableDelegate: ExpandableDelegate? {
         didSet {
             self.dataSource = self
             self.delegate = self
-        }
-    }
-    
-    open override func willMove(toWindow newWindow: UIWindow?) {
-        super.willMove(toWindow: newWindow)
-        if newWindow == nil && self.autoReleaseDelegate{
-            self.expandableDelegate = nil
         }
     }
     
