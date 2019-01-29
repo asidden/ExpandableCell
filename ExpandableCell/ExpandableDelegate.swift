@@ -49,12 +49,22 @@ public protocol ExpandableDelegate : UIScrollViewDelegate {
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayHeaderView view: UIView, forSection section: Int)
 
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayFooterView view: UIView, forSection section: Int)
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, willExpandRowAt indexPath: IndexPath)
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, didExpandRowAt indexPath: IndexPath)
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, willCollapseRowAt indexPath: IndexPath)
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, didCollapseRowAt indexPath: IndexPath)
 
     func expandableTableView(_ expandableTableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
 
     func expandableTableView(_ expandableTableView: UITableView, didHighlightRowAt indexPath: IndexPath)
 
     func expandableTableView(_ expandableTableView: UITableView, didUnhighlightRowAt indexPath: IndexPath)
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]?
 
     func expandableTableView(_ expandableTableView: UITableView, didCloseRowAt indexPath: IndexPath)
 }
@@ -92,6 +102,14 @@ public extension ExpandableDelegate {
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayHeaderView view: UIView, forSection section: Int) { }
 
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayFooterView view: UIView, forSection section: Int) { }
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, willExpandRowAt indexPath: IndexPath) { }
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, didExpandRowAt indexPath: IndexPath) { }
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, willCollapseRowAt indexPath: IndexPath) { }
+    
+    func expandableTableView(_ expandableTableView: ExpandableTableView, didCollapseRowAt indexPath: IndexPath) { }
 
     func expandableTableView(_ expandableTableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { return false }
 

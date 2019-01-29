@@ -29,6 +29,10 @@ open class ExpandableTableView: UITableView {
             self.expandableDelegate = nil
         }
     }
+    
+    open func isCellExpanded(at indexPath: IndexPath) -> Bool {
+        return !expandableProcessor.isExpandable(at:indexPath)
+    }
 }
 
 extension ExpandableTableView {
@@ -45,7 +49,12 @@ extension ExpandableTableView: UITableViewDataSource, UITableViewDelegate {
         guard let delegate = expandableDelegate else { return 0 }
         return delegate.numberOfSections(in: self)
     }
-
+    
+    public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        guard let delegate = expandableDelegate else { return [] }
+        return delegate.sectionIndexTitles(for: self)
+    }
+    
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let delegate = expandableDelegate else { return }
@@ -87,14 +96,20 @@ extension ExpandableTableView: UITableViewDataSource, UITableViewDelegate {
                     // If no other row is expanded in section
                     if noExpandedRowsInSection {
                         let originalIndexPath = expandableProcessor.original(indexPath: correctIndexPath)
+                        delegate.expandableTableView(self, willExpandRowAt: originalIndexPath)
                         open(indexPath: originalIndexPath, delegate: delegate)
+                        delegate.expandableTableView(self, didExpandRowAt: originalIndexPath)
                     } else {
+                        delegate.expandableTableView(self, willExpandRowAt: correctIndexPath)
                         open(indexPath: correctIndexPath, delegate: delegate)
+                        delegate.expandableTableView(self, didExpandRowAt: correctIndexPath)
                     }
                 }
             }
         } else {
+            delegate.expandableTableView(self, willCollapseRowAt: indexPath)
             close(indexPath: indexPath)
+            delegate.expandableTableView(self, didCollapseRowAt: indexPath)
             formerIndexPath = nil
         }
     }
@@ -357,7 +372,10 @@ extension ExpandableTableView {
             }
         }
 
-        self.deleteRows(at: expandedIndexPaths, with: animation)
+        // TODO: decide if this safe-check is still required
+        if !expandedIndexPaths.isEmpty {
+            self.deleteRows(at: expandedIndexPaths, with: .none)
+        }
         return indexPaths
     }
     
